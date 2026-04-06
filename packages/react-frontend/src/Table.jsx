@@ -22,6 +22,7 @@ function TableBody(props) {
             Delete
             </button>
         </td>
+        
     </tr>
     );
    }

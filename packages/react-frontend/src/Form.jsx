@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 
 function Form(props) {
-  const [person, setPerson] = useState({
+  const [person, setPerson] = useState({ // person is the local state for the form 
     name: "",
     job: ""
   });
