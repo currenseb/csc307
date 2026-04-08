@@ -1,9 +1,11 @@
 // backend.js
+import cors from "cors";
 import express from "express";
 
 const app = express();
 const port = 8000;
 
+app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -89,7 +91,7 @@ app.delete("/users/:id", (req, res) => {
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
   addUser(userToAdd);
-  res.send();
+  res.status(201).send(); // wait here for lecture on Friday to finish adding 201 code in IA3
 });
 
 const users = {
