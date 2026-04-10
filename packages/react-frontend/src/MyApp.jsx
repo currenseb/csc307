@@ -31,16 +31,28 @@ function MyApp() {
     return promise;
   }
 
-  function removeOneCharacter(index) {
-    const updated = characters.filter((character, i) => {
-      return i !== index;
+  function removeOneCharacter(id) {
+  fetch(`http://localhost:8000/users/${id}`, {
+    method: "DELETE",
+  })
+    .then((res) => {
+      if (res.status === 204) {
+        const updated = characters.filter((character) => character.id !== id);
+        setCharacters(updated);
+      } else if (res.status === 404) {
+        console.log("Resource not found");
+      }
+    })
+    .catch((error) => {
+      console.log(error);
     });
-    setCharacters(updated);
-  }
+}
 
   function updateList(person) { 
     postUser(person)
-      .then(() => setCharacters([...characters, person]))
+      .then((res) => res.status == 201 ?
+      res.json() : undefined
+      ).then((json) => setCharacters([...characters, json]))
       .catch((error) => {
         console.log(error);
       })

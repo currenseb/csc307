@@ -8,6 +8,10 @@ const port = 8000;
 app.use(cors());
 app.use(express.json());
 
+const createRandomID =() => {
+  return 1 * Math.random()
+};
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
@@ -34,6 +38,8 @@ const findUserById = (id) =>
   users["users_list"].find((user) => user["id"] === id);
 
 const addUser = (user) => {
+  const ID = createRandomID(); 
+  user.id = String(ID); // add new random id to a newly created user
   users["users_list"].push(user);
   return user;
 };
@@ -75,7 +81,6 @@ app.get("/users/:id", (req, res) => {
   }
 });
 
-
 app.delete("/users/:id", (req, res) => {
     const id = req.params["id"];
     const user = findUserById(id);
@@ -83,15 +88,14 @@ app.delete("/users/:id", (req, res) => {
         res.status(404).send("Resource not found.");
     } else {
         users["users_list"] = users["users_list"].filter((user) => user["id"] !== id);
-        res.send();
+        res.status(204).send();
     }
 });
 
-
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
-  addUser(userToAdd);
-  res.status(201).send(); // wait here for lecture on Friday to finish adding 201 code in IA3
+  const newUser = addUser(userToAdd);
+  res.status(201).send(newUser);
 });
 
 const users = {
